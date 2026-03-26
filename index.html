@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnera Flow Poster</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        /* A3 Print Setup */
+        @page {
+            size: A3 portrait;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0b0b0b;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            width: 297mm;
+            height: 420mm;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 15mm 20mm;
+            /* subtle radial gradient */
+            background: radial-gradient(circle at 50% 10%, #1c1a10 0%, #0b0b0b 70%);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+        .text-yellow {
+            color: #FFD700;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15mm;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo-shield {
+            width: 30px;
+            height: 35px;
+            border: 3px solid #FFD700;
+            border-radius: 4px 4px 12px 12px;
+        }
+        .brand-name {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .header-tag {
+            font-size: 14px;
+            color: #888;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        /* Main Title */
+        .title-section {
+            text-align: center;
+            margin-bottom: 15mm;
+        }
+        .title-section h1 {
+            font-size: 55px;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+        .title-section p {
+            font-size: 18px;
+            color: #a3a3a3;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        /* The Timeline Flow */
+        .timeline {
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Central Line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 120px; /* stops before the outcome boxes */
+            left: 50%;
+            width: 2px;
+            background: linear-gradient(to bottom, rgba(255,215,0,0.8), rgba(255,215,0,0.1));
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .step {
+            position: relative;
+            width: 45%;
+            z-index: 1;
+        }
+        .step.left { align-self: flex-start; }
+        .step.right { align-self: flex-end; }
+
+        /* Connectors to central line */
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 11%;
+            height: 2px;
+            background: rgba(255,215,0,0.3);
+            transform: translateY(-50%);
+        }
+        .step.left::before { right: -11%; }
+        .step.right::before { left: -11%; }
+
+        .card {
+            background: #141414;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+        .step.right .card { border-left: 3px solid #FFD700; }
+        .step.left .card { border-right: 3px solid #FFD700; }
+
+        .step-num {
+            font-size: 14px;
+            color: #FFD700;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .card p {
+            font-size: 15px;
+            color: #999;
+            line-height: 1.5;
+        }
+
+        /* Outcome Section (Branching at the bottom) */
+        .outcomes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .outcome-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border-top: 3px solid;
+        }
+        .outcome-card.success { border-top-color: #00ff88; }
+        .outcome-card.reject { border-top-color: #ff4444; }
+        .outcome-card.ghost { border-top-color: #888888; }
+
+        .outcome-card h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-family: 'Space Mono', monospace;
+        }
+        .outcome-card p {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 15mm;
+            text-align: center;
+            border-top: 1px solid #222;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #555;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="brand">
+            <div class="logo-shield"></div>
+            <div class="brand-name">Vulnera</div>
+        </div>
+        <div class="header-tag mono">Decentralized Triage</div>
+    </div>
+
+    <!-- Title Section -->
+    <div class="title-section">
+        <h1>How The Protocol <span class="text-yellow">Works</span></h1>
+        <p class="mono">A transparent, automated, and secure lifecycle from discovery to payout.</p>
+    </div>
+
+    <!-- Timeline Flow -->
+    <div class="timeline">
+        
+        <!-- Step 1 -->
+        <div class="step left">
+            <div class="card">
+                <span class="step-num mono">Step 01 &bull; Smart Contract</span>
+                <h3>Company Deposits Funds</h3>
+                <p>Before bounties go live, companies lock their funds in a secure Solana smart contract. This guarantees to hunters that the reward is readily available.</p>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step right">
+            <div class="card">
+                <span class="step-num mono">Step 02 &bull; Hunter Action</span>
+                <h3>Bug Submission</h3>
+                <p>Security researchers hunt for vulnerabilities and submit their detailed bug reports securely through the Vulnera dashboard.</p>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step left">
+            <div class="card">
+                <span class="step-num mono">Step 03 &bull; Automation</span>
+                <h3>Gemini AI Triage</h3>
+                <p>An integrated AI layer automatically scans the incoming report to filter out spam, low-quality submissions, or duplicates before the company sees it.</p>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step right">
+            <div class="card">
+                <span class="step-num mono">Step 04 &bull; Accountability</span>
+                <h3>21-Day Company Review</h3>
+                <p>The company receives the AI-vetted report. A strict 21-day countdown begins, ensuring the researcher receives a timely response.</p>
+            </div>
+        </div>
+
+        <!-- Resolution Split -->
+        <div style="text-align: center; margin-top: 10px; z-index: 1;">
+            <span class="mono" style="color:#FFD700; background: #111; padding: 5px 15px; border-radius: 20px; border: 1px solid #333;">Resolution Pathways</span>
+        </div>
+
+        <div class="outcomes">
+            <div class="outcome-card success">
+                <h4>Approved</h4>
+                <p>The smart contract instantly releases the funds directly to the hunter's crypto wallet.</p>
+            </div>
+            <div class="outcome-card reject">
+                <h4>Rejected</h4>
+                <p>The company denies the bug but is strictly required to provide a clear technical reason.</p>
+            </div>
+            <div class="outcome-card ghost">
+                <h4>No Response</h4>
+                <p>If 21 days pass, hunters can flag the company to Admins for platform penalization.</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
